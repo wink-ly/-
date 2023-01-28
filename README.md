@@ -1,4 +1,6 @@
 # client
+## 预览地址
+[client](https://www.lingnotes.fun)
 
 ## Project setup
 ```
