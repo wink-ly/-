@@ -1,6 +1,6 @@
 # client
-### 预览地址
-[图书管理](https://www.lingnotes.fun)
+
+### [预览地址](https://www.lingnotes.fun)
 
 ### Project setup
 ```
