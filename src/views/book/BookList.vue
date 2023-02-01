@@ -1,30 +1,31 @@
 <template>
+    <meta name="referrer" content="never">
     <div class="list">
         <el-button type="primary" class="addButton" @click="handleAdd" :disabled="user.identity != '管理员'"><el-icon>
                 <Plus />
             </el-icon>添加</el-button>
         <el-table :data="tableData" stripe>
-            <el-table-column label="序号" width="80" prop="bookid" align="center">
+            <el-table-column label="序号" width="100" prop="bookid" align="center">
             </el-table-column>
-            <el-table-column label="封面" width="90" prop="img" align="center">
+            <el-table-column label="封面" width="140" prop="img" align="center">
                 <template #default="scope">
                     <el-image :src="scope.row.img" style="width: 60px; height: 85px ; border-radius: 5px;">
                     </el-image>
                 </template>
             </el-table-column>
-            <el-table-column label="书名" width="150" prop="book_name" align="center">
+            <el-table-column label="书名" width="160" prop="book_name" align="center">
             </el-table-column>
             <el-table-column label="作者" width="140" prop="author" align="center">
             </el-table-column>
-            <el-table-column label="出版社" width="130" prop="publish" align="center">
+            <el-table-column label="出版社" width="140" prop="publish" align="center">
             </el-table-column>
-            <el-table-column label="分类" width="100" prop="category" align="center">
+            <el-table-column label="分类" width="120" prop="category" align="center">
             </el-table-column>
-            <el-table-column label="数量" width="70" prop="count" align="center">
+            <el-table-column label="数量" width="100" prop="count" align="center">
             </el-table-column>
             <el-table-column label="介绍" width="250" prop="introduction" align="center" show-overflow-tooltip>
             </el-table-column>
-            <el-table-column label="操作" width="190" prop="operation" align="center">
+            <el-table-column label="操作" width="200" prop="operation" align="center">
                 <template #default="scope">
                     <el-button type="warning" @click="handleEdit(scope.row)"
                         :disabled="user.identity != '管理员'"><el-icon>
@@ -90,6 +91,8 @@ const getProfile = () => {
         .post("/book/allBooks")
         .then((res) => {
             allTableData.value = res.data;
+            // 将书籍总数存入localStorage
+            localStorage.setItem("data", res.data.length)
             // 设置分页数据
             setPaginations();
         })
@@ -186,9 +189,8 @@ onMounted(() => {
 </style>
 <style lang="less" scoped>
 .list {
-    margin-left: 18%;
+    margin-left: 16vh;
     background-color: #f5f5f5;
-    width: 82%;
     height: 100vh;
     padding: 20px;
     overflow: scroll;

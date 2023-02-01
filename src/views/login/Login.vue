@@ -1,7 +1,7 @@
 <template>
     <div class="body">
         <section class="container">
-            <h1>Please login</h1>
+            <h1>请登录</h1>
             <el-form class="textarea" ref="loginForm" :model="loginUser" :rules="rules">
                 <el-form-item prop="name">
                     <el-input type="text" class="inputDeep" v-model="loginUser.name" placeholder="请输入用户名"
@@ -10,8 +10,8 @@
                 <el-form-item prop="password">
                     <el-input type="password" v-model="loginUser.password" placeholder="请输入密码" autocomplete="off" />
                 </el-form-item>
-                <el-button @click="submitForm(loginForm)">Login</el-button>
-                <p class="text">Don't have an account? <router-link to="/register" replace>Register</router-link> </p>
+                <el-button @click="submitForm(loginForm)">登录</el-button>
+                <p class="text">没有账户? <router-link to="/register" replace>注册一个吧</router-link> </p>
             </el-form>
         </section>
     </div>

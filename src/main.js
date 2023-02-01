@@ -6,12 +6,13 @@ import ElementPlus, { ElMessage } from 'element-plus'
 import 'element-plus/dist/index.css'
 import './assets/less/index.less'
 import Axios from './http'
+import 'lib-flexible'
 
 const app = createApp(App)
 
 // 给 axios 设置请求根路径
-// Axios.defaults.baseURL = '/api/'
-Axios.defaults.baseURL = 'http://localhost:3000/api'
+Axios.defaults.baseURL = '/api/'
+// Axios.defaults.baseURL = 'http://localhost:3000/api'
 app.config.globalProperties.$axios = Axios
 app.config.globalProperties.$message = ElMessage;
 app.use(ElementPlus)

@@ -61,7 +61,7 @@ const items = reactive([
 <style lang="less" scoped>
 .menu {
     border: none;
-    width: 18%;
+    width: 16vh;
     height: 100vh;
     position: absolute;
 }

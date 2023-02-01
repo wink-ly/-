@@ -1,9 +1,9 @@
 <template>
     <div class="main">
         <el-table :data="tableData" stripe v-show="user.identity == '管理员'">
-            <el-table-column label="openid" width="300" prop="openid" align="center">
+            <el-table-column label="openid" width="340" prop="openid" align="center">
             </el-table-column>
-            <el-table-column label="session_key" width="300" prop="session_key" align="center">
+            <el-table-column label="session_key" width="340" prop="session_key" align="center">
             </el-table-column>
         </el-table>
         <span v-show="user.identity != '管理员'">无权查看</span>
@@ -38,12 +38,10 @@ onMounted(() => {
 
 <style scoped>
 .main {
-    margin-left: 18%;
+    margin-left: 16vh;
     background-color: #f5f5f5;
-    width: 82%;
     height: 100vh;
     padding: 20px;
-    /* overflow: scroll; */
     display: flex;
     justify-content: center;
 }

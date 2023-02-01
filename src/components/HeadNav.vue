@@ -66,7 +66,7 @@ const logout = () => {
 <style lang="less" scoped>
 .top {
     background-color: #fff;
-    width: 100%;
+    width: 100vw;
     height: 60px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -76,20 +76,24 @@ const logout = () => {
     color: #388adb;
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: 24px;
+    width: 40%;
     margin-left: 60px;
     letter-spacing: 3px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .right {
     color: #808080;
     position: absolute;
     height: inherit;
+    width: 40%;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    right: 130px;
+    right: 0;
 }
 
 img{

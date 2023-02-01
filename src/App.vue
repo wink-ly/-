@@ -29,5 +29,4 @@ const isEmpty = (value) => {
 </script>
 
 <style>
-
 </style>

@@ -7,7 +7,8 @@ const types = {
 
 const state = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  count_book: ""
 }
 
 
@@ -25,6 +26,10 @@ const mutations = {
   [types.SET_USER](state, user) {
     if (user) state.user = user
     else state.user = {}
+  },
+
+  changeCount(state,count_book){
+    state.count_book = count_book
   }
 }
 
