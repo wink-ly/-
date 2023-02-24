@@ -1,7 +1,8 @@
 <template>
     <el-row class="menu">
         <el-col>
-            <el-menu active-text-color="#cfcfcf" background-color="#1f7fd0" text-color="#fff">
+            <el-menu active-text-color="#cfcfcf" background-color="#1f7fd0" text-color="#fff" 
+            :mode="screenWidth <600 ? 'horizontal' : 'vertical'">
                 <router-link to="/home">
                     <el-menu-item index="0">
                         <img src="../assets/images/home.png" alt="" />
@@ -28,6 +29,8 @@
 
 <script setup>
 import { reactive } from "vue";
+
+var screenWidth = window.screen.width
 const items = reactive([
     {
         icon: "",
@@ -56,6 +59,7 @@ const items = reactive([
         ],
     },
 ]);
+
 </script>
 
 <style lang="less" scoped>
@@ -64,14 +68,15 @@ const items = reactive([
     width: 16vh;
     height: 100vh;
     position: absolute;
+
+    @media screen and (min-width: 220px) and (max-width:600px) {
+        width: 100vw;
+        height: 60px;
+    }
 }
 
 .el-menu {
     height: 100%;
-}
-
-.router-link-active {
-    text-decoration: none;
 }
 
 a {

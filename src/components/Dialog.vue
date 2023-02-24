@@ -37,7 +37,7 @@
                     <el-input type="textarea" v-model="formData.introduction"></el-input>
                 </el-form-item>
 
-                <el-form-item class="text_right">
+                <el-form-item>
                     <el-button @click="dialog.show = false">取消</el-button>
                     <el-button type="primary" @click="onSubmit(form)">提交</el-button>
                 </el-form-item>
@@ -49,7 +49,7 @@
 <script setup>
 import { ref, reactive, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
-const emits = defineEmits(["sendMsg"]);
+const emits = defineEmits(['update']);
 const props = defineProps({
     dialog: Object,
     formData: Object,
@@ -60,6 +60,7 @@ const form_type_list = ref([
     "心灵成长",
     "亲子共读",
     "科学技术",
+    "经典文学"
 ]);
 
 const form_rules = reactive({
@@ -91,14 +92,25 @@ const onSubmit = (form) => {
 </script>
   
 <style lang="less" scoped>
-.dialog :deep(.el-dialog){
+.dialog :deep(.el-dialog) {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    @media screen and (min-width: 220px) and (max-width:600px){
+
+    @media screen and (min-width: 220px) and (max-width:600px) {
         width: 90vw !important;
         height: 80vh !important;
     }
+}
+
+.dialog2 :deep(.el-dialog) {
+    @media screen and (min-width: 220px) and (max-width:600px) {
+        width: 90vw !important;
+    }
+}
+
+.dialog2 :deep(.el-textarea__inner) {
+    height: 80px;
 }
 </style>

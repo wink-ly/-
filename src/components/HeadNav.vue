@@ -52,7 +52,6 @@ const showInfoList = () => {
 };
 
 const logout = () => {
-    // console.log("退出");
     // 清除token
     localStorage.removeItem("mytoken");
     // 设置vuex store
@@ -77,11 +76,14 @@ const logout = () => {
     display: flex;
     align-items: center;
     font-size: 24px;
-    width: 40%;
+    width: 40vw;
     margin-left: 60px;
     letter-spacing: 3px;
-    overflow: hidden;
-    white-space: nowrap;
+
+    @media screen and (min-width: 220px) and (max-width:600px) {
+        margin-left: 30px;
+        font-size: 16px;
+    }
 }
 
 .right {
@@ -96,11 +98,12 @@ const logout = () => {
     right: 0;
 }
 
-img{
+img {
     height: 25px;
     width: 25px;
     margin: 6px;
 }
+
 .name {
     color: #388adb;
     margin-left: 8px;
