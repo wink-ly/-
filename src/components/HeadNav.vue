@@ -25,17 +25,12 @@
 
 <script setup>
 import { ArrowDown } from "@element-plus/icons";
-import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const store = useStore();
-const user = computed(() => {
-    return store.getters.user;
-});
-
+const user = JSON.parse(JSON.stringify(store.getters.user))
 const setDialogInfo = (Item) => {
-    // console.log(Item);
     switch (Item) {
         case "info":
             showInfoList();

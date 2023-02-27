@@ -8,9 +8,10 @@
                         autocomplete="off" />
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" v-model="loginUser.password" placeholder="请输入密码" autocomplete="off" />
+                    <el-input type="password" v-model="loginUser.password" placeholder="请输入密码" autocomplete="off" 
+                    @keyup.enter.native="submitForm(loginForm)"/>
                 </el-form-item>
-                <el-button @click="submitForm(loginForm)">登录</el-button>
+                <el-button @click="submitForm(loginForm)" >登录</el-button>
                 <p class="text">没有账户? <router-link to="/register" replace>注册一个吧</router-link> </p>
             </el-form>
         </section>
@@ -102,7 +103,8 @@ const isEmpty = (value) => {
 
 <style lang="less" scoped>
 .body {
-    background-color: #4682b4;
+    background-image: url(../../assets/images/top3.png);
+    background-size: cover;
     color: #fff;
     height: 100vh;
     display: flex;
@@ -111,9 +113,9 @@ const isEmpty = (value) => {
 }
 
 .container {
-    background-color: #2a4e6c;
     padding: 20px 40px;
     border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 5);
 }
 
 h1 {

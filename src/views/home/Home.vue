@@ -3,11 +3,15 @@
         <div class="top">
             <div class="count1">
                 <span>书籍总数</span>
-                <text><el-icon><Management /></el-icon>{{ books }}</text>
+                <text><el-icon style="color: #f90000;">
+                        <Management />
+                    </el-icon>{{ books }}</text>
             </div>
             <div class="count2">
                 <span>累计用户数</span>
-                <text><el-icon><UserFilled /></el-icon>{{ users }}</text>
+                <text><el-icon style="color: #08761f;">
+                        <UserFilled />
+                    </el-icon>{{ users }}</text>
             </div>
         </div>
         <div class="charts">
@@ -33,7 +37,7 @@ var array = [];
 const getPie = async () => {
     var chartDom = document.getElementById('pie');
     var chartPie = echarts.init(chartDom);
-    let option;
+    var option;
 
     for (let i = 0; i < 5; i++) {
         await proxy.$axios
@@ -75,13 +79,15 @@ const getPie = async () => {
             }
         ]
     };
+    chartDom.removeAttribute('_echarts_instance_');
     option && chartPie.setOption(option);
+
 }
 
 const getLine = () => {
     var chartDom = document.getElementById('line');
     var chartLine = echarts.init(chartDom);
-    let option;
+    var option;
 
     option = {
         title: {
@@ -119,9 +125,10 @@ const getLine = () => {
             },
         ]
     };
-
+    chartDom.removeAttribute('_echarts_instance_');
     option && chartLine.setOption(option);
 }
+
 const getProfile = () => {
     proxy.$axios
         .post("/user/allUsers")
