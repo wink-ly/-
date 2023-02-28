@@ -1,24 +1,54 @@
 <template>
     <div class="main">
         <div class="top">
-            <div class="count1">
+            <div class="count">
                 <span>书籍总数</span>
                 <text><el-icon style="color: #f90000;">
                         <Management />
                     </el-icon>{{ books }}</text>
             </div>
-            <div class="count2">
+            <div class="count">
                 <span>累计用户数</span>
                 <text><el-icon style="color: #08761f;">
                         <UserFilled />
                     </el-icon>{{ users }}</text>
             </div>
+            <div class="count">
+                <span>共享请求数</span>
+                <text><el-icon style="color: #5470c6;">
+                        <Opportunity />
+                    </el-icon>{{ share }}</text>
+            </div>
         </div>
         <div class="charts">
-            <div id="line" class="line"></div>
+            <div class="list">
+                <h2 style="color: #636363;">用户共享</h2>
+                <el-table :header-cell-style="{ background: '#f7f8fc' }" :data="tableData">
+                    <el-table-column label="书名" width="140" prop="book_name" align="center">
+                    </el-table-column>
+                    <el-table-column label="作者" width="130" prop="author" align="center">
+                    </el-table-column>
+                    <el-table-column label="出版社" width="130" prop="publish" align="center">
+                    </el-table-column>
+                    <el-table-column label="用户号码" width="130" prop="tel" align="center" v-if="user.identity == '管理员'">
+                    </el-table-column>
+                    <el-table-column label="操作" width="210" prop="option" align="center">
+                        <template #default="scope">
+                            <el-button type="warning" :disabled="user.identity != '管理员'">
+                                <el-icon>
+                                    <Edit />
+                                </el-icon>复制</el-button>
+                            <el-button type="danger" @click="handleDelete(scope.row)" :disabled="user.identity != '管理员'">
+                                <el-icon>
+                                    <Delete />
+                                </el-icon>删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
             <div class="column">
-                <div id="pie" class="pie1"></div>
-                <div id="pie" class="pie2"></div>
+                <div id="pie" class="pie"></div>
+                <div id="pie" class="pie"></div>
             </div>
         </div>
     </div>
@@ -26,13 +56,49 @@
 
 <script setup>
 import * as echarts from 'echarts';
-import { onMounted, getCurrentInstance } from "vue";
-import { Management, UserFilled } from "@element-plus/icons";
+import { ref, onMounted, getCurrentInstance, computed } from "vue";
+import { Management, UserFilled, Opportunity, Delete, Edit } from "@element-plus/icons";
+import { useStore } from "vuex";
 const { proxy } = getCurrentInstance();
+const store = useStore();
+const user = computed(() => {
+    return store.getters.user;
+});
 let books = localStorage.getItem("data");
 let users = localStorage.getItem("user");
+var share = 0;
 const category = ["经典文学", "亲子共读", "科幻畅想", "心灵成长", "科学技术"]
 var array = [];
+var tableData = ref([]);
+
+const getTable = async () => {
+    await proxy.$axios
+        .post("/book/share")
+        .then((res) => {
+            if (res.data === '暂无数据') {
+                tableData.value = null
+                share = 0
+            } else {
+                share = res.data.length
+                tableData.value = res.data;
+            }
+        })
+}
+
+const getUsers = () => {
+    proxy.$axios
+        .post("/user/allUsers")
+        .then((res) => {
+            localStorage.setItem("user", res.data.length)
+        })
+};
+
+const handleDelete = (row) => {
+    proxy.$axios.post(`/book/delshare/${row.book_name}`).then((res) => {
+        proxy.$message("删除成功！");
+        getTable();
+    });
+};
 
 const getPie = async () => {
     var chartDom = document.getElementById('pie');
@@ -83,59 +149,6 @@ const getPie = async () => {
     option && chartPie.setOption(option);
 
 }
-
-const getLine = () => {
-    var chartDom = document.getElementById('line');
-    var chartLine = echarts.init(chartDom);
-    var option;
-
-    option = {
-        title: {
-            text: '折线图'
-        },
-        legend: {
-            data: ['email', 'Union Ads']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                name: 'email',
-                type: 'line',
-                stack: 'Total',
-                data: [120, 132, 101, 134, 90, 230, 210]
-            },
-            {
-                name: 'Union Ads',
-                type: 'line',
-                stack: 'Total',
-                data: [220, 182, 191, 234, 290, 330, 310]
-            },
-        ]
-    };
-    chartDom.removeAttribute('_echarts_instance_');
-    option && chartLine.setOption(option);
-}
-
-const getProfile = () => {
-    proxy.$axios
-        .post("/user/allUsers")
-        .then((res) => {
-            localStorage.setItem("user", res.data.length)
-        })
-};
 //监听浏览器窗口大小改变
 window.addEventListener('resize', () => {
     location.reload()
@@ -143,8 +156,8 @@ window.addEventListener('resize', () => {
 
 onMounted(() => {
     getPie();
-    getLine();
-    getProfile();
+    getTable();
+    getUsers();
 })
 </script>
 
@@ -153,21 +166,30 @@ onMounted(() => {
     height: 92vh;
     background-color: #f7f8fc;
     padding: 20px;
-    overflow: scroll;
 }
 
 .top {
     display: flex;
     color: #141313;
+
+    div:first-child {
+        margin-left: 20vh;
+    }
+
+    span {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px;
+
+        @media screen and (min-width: 220px) and (max-width:600px) {
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+        }
+    }
 }
 
-span {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 10px;
-}
-
-.count1 {
+.count {
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -177,7 +199,6 @@ span {
     width: 20%;
     margin: 20px;
     padding: 10px;
-    margin-left: 20vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 
     @media screen and (min-width: 220px) and (max-width:600px) {
@@ -187,44 +208,29 @@ span {
     }
 }
 
-.count2 {
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 20%;
-    margin: 20px;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-
-    @media screen and (min-width: 220px) and (max-width:600px) {
-        width: 100%;
-        margin-left: 0;
-        margin-top: 60px;
-    }
-}
-
 .charts {
     display: flex;
     height: 70%;
-    overflow: scroll;
 
     @media screen and (min-width: 220px) and (max-width:600px) {
         height: 60vh;
         display: block;
         width: 100%;
+        overflow: scroll;
     }
 }
 
-.line {
+.list {
     height: 98%;
-    width: 100%;
+    width: 50vw;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    padding: 30px;
+    padding: 10px;
     margin: 5px;
     margin-left: 20vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
     @media screen and (min-width: 220px) and (max-width:600px) {
         margin-left: 0;
@@ -234,9 +240,21 @@ span {
     }
 }
 
+.list :deep(.el-table) {
+    background-color: transparent;
+}
+
+.list :deep(.el-table ::before) {
+    height: 0px;
+}
+
+.list :deep(.el-table tr) {
+    background-color: transparent;
+}
+
 .column {
     height: auto;
-    width: 60%;
+    width: 30vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -248,16 +266,7 @@ span {
     }
 }
 
-.pie1 {
-    height: 46%;
-    width: 90%;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    padding: 10px;
-    margin: 10px;
-}
-
-.pie2 {
+.pie {
     height: 46%;
     width: 90%;
     border-radius: 5px;

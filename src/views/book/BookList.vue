@@ -30,8 +30,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="280" prop="option" align="center">
                     <template #default="scope">
-                        <el-button type="success" :disabled="user.identity != '管理员'"
-                            @click="handleRecommend(scope.row)">
+                        <el-button type="success" :disabled="user.identity != '管理员'" @click="handleRecommend(scope.row)">
                             <el-icon>
                                 <component class="fold-menu" :is="scope.row.rec == 'false' ? Star : StarFilled">
                                 </component>
@@ -105,9 +104,13 @@ const getProfile = () => {
     proxy.$axios
         .post("/book/allBooks")
         .then((res) => {
-            allTableData.value = res.data;
-            // 将书籍总数存入localStorage
-            localStorage.setItem("data", res.data.length)
+            if (res.data === '暂无数据') {
+                allTableData.value = null
+            } else {
+                allTableData.value = res.data;
+                // 将书籍总数存入localStorage
+                localStorage.setItem("data", res.data.length)
+            }
             // 设置分页数据
             setPaginations();
         })
