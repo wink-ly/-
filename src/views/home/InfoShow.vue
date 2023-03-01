@@ -44,8 +44,8 @@ const updateImg = (i) => {
     e.style.backgroundImage = 'url(' + imgs[i].imgUrl + ')';
 }
 
-const getSaying = () => {
-    proxy.$axios.get('https://saying.api.azwcl.com/saying/get').then((res) => {
+const getSaying = async () => {
+    await proxy.$axios.get('https://saying.api.azwcl.com/saying/get').then((res) => {
         saying.value = res.data.data
     });
 }
@@ -112,7 +112,6 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    // position: relative;
 
     .content {
         width: 80%;

@@ -34,9 +34,9 @@
                     </el-table-column>
                     <el-table-column label="操作" width="210" prop="option" align="center">
                         <template #default="scope">
-                            <el-button type="warning" :disabled="user.identity != '管理员'">
+                            <el-button type="success" :disabled="user.identity != '管理员'">
                                 <el-icon>
-                                    <Edit />
+                                    <DocumentCopy />
                                 </el-icon>复制</el-button>
                             <el-button type="danger" @click="handleDelete(scope.row)" :disabled="user.identity != '管理员'">
                                 <el-icon>
@@ -52,27 +52,33 @@
             </div>
         </div>
     </div>
+    <dialog-vue :dialog="dialog" @update="getTable" :formData="formData"></dialog-vue>
 </template>
 
 <script setup>
 import * as echarts from 'echarts';
 import { ref, onMounted, getCurrentInstance, computed } from "vue";
-import { Management, UserFilled, Opportunity, Delete, Edit } from "@element-plus/icons";
+import { Management, UserFilled, Opportunity, Delete, DocumentCopy } from "@element-plus/icons";
 import { useStore } from "vuex";
+import DialogVue from "@/components/dialogcomponent.vue";
+const formData = ref({
+    book_name: ""
+});
 const { proxy } = getCurrentInstance();
 const store = useStore();
 const user = computed(() => {
     return store.getters.user;
 });
+let dialog = ref({ show: false, option: "" });
 let books = localStorage.getItem("data");
-let users = localStorage.getItem("user");
+let users = localStorage.getItem("users");
 var share = 0;
 const category = ["经典文学", "亲子共读", "科幻畅想", "心灵成长", "科学技术"]
 var array = [];
 var tableData = ref([]);
 
-const getTable = async () => {
-    await proxy.$axios
+const getTable = () => {
+    proxy.$axios
         .post("/book/share")
         .then((res) => {
             if (res.data === '暂无数据') {
@@ -85,26 +91,21 @@ const getTable = async () => {
         })
 }
 
-const getUsers = () => {
-    proxy.$axios
-        .post("/user/allUsers")
-        .then((res) => {
-            localStorage.setItem("user", res.data.length)
-        })
-};
-
 const handleDelete = (row) => {
-    proxy.$axios.post(`/book/delshare/${row.book_name}`).then((res) => {
-        proxy.$message("删除成功！");
-        getTable();
-    });
+    dialog.value = {
+        show: true,
+        option: "home_delete",
+    };
+    formData.value = {
+        book_name: row.book_name,
+    }
 };
 
 const getPie = async () => {
     var chartDom = document.getElementById('pie');
     var chartPie = echarts.init(chartDom);
     var option;
-
+    
     for (let i = 0; i < 5; i++) {
         await proxy.$axios
             .post(`/book/category/${category[i]}`)
@@ -151,13 +152,12 @@ const getPie = async () => {
 }
 //监听浏览器窗口大小改变
 window.addEventListener('resize', () => {
-    location.reload()
+    getPie();
 });
 
 onMounted(() => {
     getPie();
     getTable();
-    getUsers();
 })
 </script>
 
@@ -174,6 +174,10 @@ onMounted(() => {
 
     div:first-child {
         margin-left: 20vh;
+
+        @media screen and (min-width: 220px) and (max-width:600px) {
+            margin-left: 10px;
+        }
     }
 
     span {
@@ -236,6 +240,7 @@ onMounted(() => {
         margin-left: 0;
         margin: 10px;
         padding: 5px;
+        height: 70%;
         width: 95%;
     }
 }

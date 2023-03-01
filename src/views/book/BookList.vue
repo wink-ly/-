@@ -61,12 +61,14 @@
         </div>
     </div>
     <dialog-vue :dialog="dialog" @update="getProfile" :formData="formData"></dialog-vue>
+    <dialog1-vue :dialog="dialog1" @update="getProfile" :formData="formData"></dialog1-vue>
 </template>
 
 <script setup>
 import { Plus, Edit, Delete, Star, StarFilled } from "@element-plus/icons";
 import { ref, onMounted, getCurrentInstance, computed } from "vue";
 import DialogVue from "@/components/Dialog.vue";
+import Dialog1Vue from "@/components/dialogcomponent.vue";
 import { useStore } from "vuex";
 const { proxy } = getCurrentInstance();
 const store = useStore();
@@ -78,6 +80,7 @@ const user = computed(() => {
 let tableData = ref([]);
 let allTableData = ref([]);
 let dialog = ref({ show: false, title: "", option: "" });
+let dialog1 = ref({ show: false, option: "" });
 const formData = ref({
     bookid: "",
     book_name: "",
@@ -173,10 +176,13 @@ const handleAdd = () => {
 };
 //删除
 const handleDelete = (row) => {
-    proxy.$axios.post(`/book/delete/${row.bookid}`).then((res) => {
-        proxy.$message("删除成功！");
-        getProfile();
-    });
+    dialog1.value = {
+        show: true,
+        option: "book_delete",
+    };
+    formData.value = {
+        bookid: row.bookid,
+    }
 };
 //分页
 const setPaginations = () => {
@@ -211,8 +217,16 @@ const handleCurrentChange = (page) => {
         tableData.value = tables.value;
     }
 };
+const getUsers = () => {
+    proxy.$axios
+        .post("/user/allUsers")
+        .then((res) => {
+            localStorage.setItem("users", res.data.length)
+        })
+};
 onMounted(() => {
     getProfile();
+    getUsers();
 });
 
 </script>
