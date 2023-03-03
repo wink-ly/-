@@ -70,13 +70,18 @@ import { ref, onMounted, getCurrentInstance, computed } from "vue";
 import DialogVue from "@/components/Dialog.vue";
 import Dialog1Vue from "@/components/dialogcomponent.vue";
 import { useStore } from "vuex";
+import emitter from "../../bus/index";
+const copydata = ref({
+    book_name: "",
+    author: "",
+    publish: "",
+    tel: "",
+});
 const { proxy } = getCurrentInstance();
 const store = useStore();
 const user = computed(() => {
     return store.getters.user;
 });
-
-
 let tableData = ref([]);
 let allTableData = ref([]);
 let dialog = ref({ show: false, title: "", option: "" });
@@ -158,21 +163,39 @@ const handleEdit = (row) => {
 };
 //添加
 const handleAdd = () => {
-    dialog.value = {
-        show: true,
-        title: "添加信息",
-        option: "add",
-    };
-    formData.value = {
-        bookid: "",
-        book_name: "",
-        author: "",
-        publish: "",
-        category: "",
-        count: "",
-        img: "",
-        introduction: "",
-    };
+    emitter.on("response", (copyData) => {
+        dialog.value = {
+            show: true,
+            title: "添加信息",
+            option: "add",
+        };
+        formData.value = {
+            bookid: "",
+            book_name: copyData.value.book_name,
+            author: copyData.value.author,
+            publish: copyData.value.publish,
+            category: "",
+            count: "",
+            img: "",
+            introduction: "",
+        }
+        console.log(formData)
+    })
+    // dialog.value = {
+    //     show: true,
+    //     title: "添加信息",
+    //     option: "add",
+    // };
+    // formData.value = {
+    //     bookid: "",
+    //     book_name: "",
+    //     author: "",
+    //     publish: "",
+    //     category: "",
+    //     count: "",
+    //     img: "",
+    //     introduction: "",
+    // };
 };
 //删除
 const handleDelete = (row) => {

@@ -34,7 +34,7 @@
                     </el-table-column>
                     <el-table-column label="操作" width="210" prop="option" align="center">
                         <template #default="scope">
-                            <el-button type="success" :disabled="user.identity != '管理员'">
+                            <el-button type="success" @click="handleCopy(scope.row)" :disabled="user.identity != '管理员'">
                                 <el-icon>
                                     <DocumentCopy />
                                 </el-icon>复制</el-button>
@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    <dialog-vue :dialog="dialog" @update="getTable" :formData="formData"></dialog-vue>
+    <dialog-vue :dialog="dialog" :formData="formData" @update="getTable"></dialog-vue>
 </template>
 
 <script setup>
@@ -61,21 +61,28 @@ import { ref, onMounted, getCurrentInstance, computed } from "vue";
 import { Management, UserFilled, Opportunity, Delete, DocumentCopy } from "@element-plus/icons";
 import { useStore } from "vuex";
 import DialogVue from "@/components/dialogcomponent.vue";
-const formData = ref({
-    book_name: ""
-});
+import emitter from "../../bus/index";
 const { proxy } = getCurrentInstance();
 const store = useStore();
-const user = computed(() => {
-    return store.getters.user;
-});
 let dialog = ref({ show: false, option: "" });
 let books = localStorage.getItem("data");
 let users = localStorage.getItem("users");
 var share = 0;
-const category = ["经典文学", "亲子共读", "科幻畅想", "心灵成长", "科学技术"]
 var array = [];
 var tableData = ref([]);
+const user = computed(() => {
+    return store.getters.user;
+});
+const formData = ref({
+    book_name: ""
+});
+const copyData = ref({
+    book_name: "",
+    author: "",
+    publish: "",
+    tel: "",
+});
+const category = ["经典文学", "亲子共读", "科幻畅想", "心灵成长", "科学技术"]
 
 const getTable = () => {
     proxy.$axios
@@ -90,6 +97,17 @@ const getTable = () => {
             }
         })
 }
+
+const handleCopy = (row) => {
+    copyData.value = {
+        book_name: row.book_name,
+        author: row.author,
+        publish: row.publish,
+        tel: row.tel,
+    }
+    emitter.emit("response", copyData)
+    proxy.$message({ message: "复制成功！", type: "success" });
+};
 
 const handleDelete = (row) => {
     dialog.value = {

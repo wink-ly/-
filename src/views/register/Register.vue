@@ -17,7 +17,10 @@
           <el-input v-model="registerUser.confirmPassword" type="password" autocomplete="off" placeholder="请再次输入密码"
             show-password />
         </el-form-item>
-        <el-button class="btn" type="primary" @click="submitForm(registerForm)">注册</el-button>
+        <div class="bt">
+          <el-button class="btn" type="primary" @click="goback()">返回</el-button>
+          <el-button class="btn" type="primary" @click="submitForm(registerForm)">注册</el-button>
+        </div>
       </el-form>
     </div>
   </div>
@@ -119,6 +122,10 @@ const submitForm = (registerForm) => {
     }
   });
 };
+// 返回
+const goback = () => {
+  router.push("/login");
+}
 </script>
 
 <style lang="less" scoped>
@@ -158,10 +165,16 @@ h2 {
   width: 65%;
 }
 
+.bt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .btn {
   background-color: lightblue;
   color: #000000;
-  width: 100%;
+  width: 40%;
   display: flex;
   align-items: center;
   justify-content: center;

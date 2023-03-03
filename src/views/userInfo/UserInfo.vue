@@ -1,12 +1,12 @@
 <template>
     <div class="main">
-        <el-table :data="tableData" stripe v-show="user.identity == '管理员'">
+        <el-table :data="tableData" stripe v-if="user.identity == '管理员'">
             <el-table-column label="openid" prop="openid" align="center">
             </el-table-column>
             <el-table-column label="session_key" prop="session_key" align="center">
             </el-table-column>
         </el-table>
-        <span v-show="user.identity != '管理员'">无权查看</span>
+        <span v-else>无权查看</span>
     </div>
 </template>
 
