@@ -38,7 +38,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button @click="dialog.show = false">取消</el-button>
+                    <el-button @click="cancel()">取消</el-button>
                     <el-button type="primary" @click="onSubmit(form)">提交</el-button>
                 </el-form-item>
             </el-form>
@@ -48,7 +48,9 @@
   
 <script setup>
 import { ref, reactive, getCurrentInstance } from "vue";
+import { useStore } from "vuex";
 const { proxy } = getCurrentInstance();
+const store = useStore();
 const emits = defineEmits(['update']);
 const props = defineProps({
     dialog: Object,
@@ -89,6 +91,10 @@ const onSubmit = (form) => {
     });
 };
 
+const cancel = () => {
+    store.dispatch("clearCopydata");
+    props.dialog.show = false;
+}
 </script>
   
 <style lang="less" scoped>

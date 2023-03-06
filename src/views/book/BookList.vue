@@ -67,20 +67,16 @@
 <script setup>
 import { Plus, Edit, Delete, Star, StarFilled } from "@element-plus/icons";
 import { ref, onMounted, getCurrentInstance, computed } from "vue";
-import DialogVue from "@/components/Dialog.vue";
-import Dialog1Vue from "@/components/dialogcomponent.vue";
+import DialogVue from "@/components/DialogForm.vue";
+import Dialog1Vue from "@/components/DialogDelete.vue";
 import { useStore } from "vuex";
-import emitter from "../../bus/index";
-const copydata = ref({
-    book_name: "",
-    author: "",
-    publish: "",
-    tel: "",
-});
 const { proxy } = getCurrentInstance();
 const store = useStore();
 const user = computed(() => {
     return store.getters.user;
+});
+const copydata = computed(() => {
+    return store.getters.copydata;
 });
 let tableData = ref([]);
 let allTableData = ref([]);
@@ -163,39 +159,21 @@ const handleEdit = (row) => {
 };
 //添加
 const handleAdd = () => {
-    emitter.on("response", (copyData) => {
-        dialog.value = {
-            show: true,
-            title: "添加信息",
-            option: "add",
-        };
-        formData.value = {
-            bookid: "",
-            book_name: copyData.value.book_name,
-            author: copyData.value.author,
-            publish: copyData.value.publish,
-            category: "",
-            count: "",
-            img: "",
-            introduction: "",
-        }
-        console.log(formData)
-    })
-    // dialog.value = {
-    //     show: true,
-    //     title: "添加信息",
-    //     option: "add",
-    // };
-    // formData.value = {
-    //     bookid: "",
-    //     book_name: "",
-    //     author: "",
-    //     publish: "",
-    //     category: "",
-    //     count: "",
-    //     img: "",
-    //     introduction: "",
-    // };
+    dialog.value = {
+        show: true,
+        title: "添加信息",
+        option: "add",
+    };
+    formData.value = {
+        bookid: "",
+        book_name: copydata.value.book_name,
+        author: copydata.value.author,
+        publish: copydata.value.publish,
+        category: "",
+        count: copydata.value.count,
+        img: "",
+        introduction: "",
+    }
 };
 //删除
 const handleDelete = (row) => {

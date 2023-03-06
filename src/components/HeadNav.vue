@@ -51,7 +51,7 @@ const logout = () => {
     localStorage.removeItem("mytoken");
     // 设置vuex store
     store.dispatch("clearCurrentState");
-    //   跳转
+    // 跳转
     router.push("/login");
 };
 

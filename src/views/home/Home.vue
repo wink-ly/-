@@ -60,8 +60,7 @@ import * as echarts from 'echarts';
 import { ref, onMounted, getCurrentInstance, computed } from "vue";
 import { Management, UserFilled, Opportunity, Delete, DocumentCopy } from "@element-plus/icons";
 import { useStore } from "vuex";
-import DialogVue from "@/components/dialogcomponent.vue";
-import emitter from "../../bus/index";
+import DialogVue from "@/components/DialogDelete.vue";
 const { proxy } = getCurrentInstance();
 const store = useStore();
 let dialog = ref({ show: false, option: "" });
@@ -97,18 +96,18 @@ const getTable = () => {
             }
         })
 }
-
+//  复制按钮
 const handleCopy = (row) => {
     copyData.value = {
         book_name: row.book_name,
         author: row.author,
         publish: row.publish,
-        tel: row.tel,
+        count: 1
     }
-    emitter.emit("response", copyData)
+    store.dispatch("setCopydata", copyData.value);
     proxy.$message({ message: "复制成功！", type: "success" });
 };
-
+//  删除按钮
 const handleDelete = (row) => {
     dialog.value = {
         show: true,

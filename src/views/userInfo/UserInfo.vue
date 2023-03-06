@@ -6,7 +6,7 @@
             <el-table-column label="session_key" prop="session_key" align="center">
             </el-table-column>
         </el-table>
-        <span v-else>无权查看</span>
+        <span v-else>管理员才可见哦</span>
     </div>
 </template>
 
