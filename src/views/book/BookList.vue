@@ -10,7 +10,7 @@
                 </el-table-column>
                 <el-table-column label="封面" width="140" prop="img" align="center">
                     <template #default="scope">
-                        <el-image :src="scope.row.img" style="width: 60px; height: 85px ; border-radius: 5px;">
+                        <el-image :src="scope.row.img" style="width: 60px; height: 85px ; border-radius: 5px;" >
                         </el-image>
                     </template>
                 </el-table-column>
@@ -127,14 +127,14 @@ const handleRecommend = (row) => {
     }
     if (formData.value.rec == "false") {
         formData.value.rec = "true";
-        proxy.$axios.post('/book/recommend', formData).then((res) => {
-            proxy.$message({ message: "推荐成功！", type: "success" });
+        proxy.$axios.post('/book/recommend', formData).then(() => {
+            proxy.$message({ message: "推荐成功！", duration: 1000, type: "success" });
             getProfile();
         });
     } else if (formData.value.rec == "true") {
         formData.value.rec = "false";
-        proxy.$axios.post('/book/recommend', formData).then((res) => {
-            proxy.$message("取消推荐成功！");
+        proxy.$axios.post('/book/recommend', formData).then(() => {
+            proxy.$message({ message: "取消推荐成功！", duration: 1000 });
             getProfile();
         });
     }

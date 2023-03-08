@@ -76,11 +76,11 @@ const onSubmit = (form) => {
     form.validate((valid) => {
         if (valid) {
             const url = props.dialog.option == "add" ? "add" : `edit/${props.formData.bookid}`;
-            proxy.$axios.post(`/book/${url}`, props.formData).then((res) => {
+            proxy.$axios.post(`/book/${url}`, props.formData).then(() => {
                 if (props.dialog.option == "edit") {
-                    proxy.$message({ message: "数据更新成功", type: "success" });
+                    proxy.$message({ message: "数据更新成功", duration: 1000, type: "success" });
                 } else {
-                    proxy.$message({ message: "数据添加成功", type: "success" });
+                    proxy.$message({ message: "数据添加成功", duration: 1000, type: "success" });
                 }
                 // 隐藏dialog
                 props.dialog.show = false;

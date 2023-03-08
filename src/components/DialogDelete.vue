@@ -23,15 +23,15 @@ const props = defineProps({
 
 const onSubmit = () => {
     if (props.dialog.option == "home_delete") {
-        proxy.$axios.post(`/book/delshare/${props.formData.book_name}`).then((res) => {
-            proxy.$message("删除成功！");
+        proxy.$axios.post(`/book/delshare/${props.formData.book_name}`).then(() => {
+            proxy.$message({ message: "删除成功！", duration: 1000 });
             props.dialog.show = false;
             emits("update");
         });
     }
     if (props.dialog.option == "book_delete") {
-        proxy.$axios.post(`/book/delete/${props.formData.bookid}`).then((res) => {
-            proxy.$message("删除成功！");
+        proxy.$axios.post(`/book/delete/${props.formData.bookid}`).then(() => {
+            proxy.$message({ message: "删除成功！", duration: 1000 });
             props.dialog.show = false;
             emits("update");
         });

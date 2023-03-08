@@ -8,8 +8,8 @@
         </div>
         <div class="down">
             <div class="userinfo">
-                <span class="content">{{ saying.content }}</span>
-                <div class="author"><span>---{{ saying.author }}</span></div>
+                <span class="content">{{ saying.hitokoto }}</span>
+                <div class="author"><span>---{{ saying.from }}</span></div>
             </div>
             <div class="edit">
                 <div v-for="(item, index) in imgs" :key="index" class="list">
@@ -19,7 +19,7 @@
         </div>
     </div>
 </template>
-  
+
 <script setup>
 import { useStore } from "vuex";
 import { ref, onMounted, getCurrentInstance } from "vue";
@@ -27,8 +27,8 @@ const { proxy } = getCurrentInstance();
 const store = useStore();
 const user = JSON.parse(JSON.stringify(store.getters.user))
 const saying = ref({
-    author: "",
-    content: "",
+    from: "",
+    hitokoto: "",
 })
 const imgs = [
     { imgUrl: require('../../assets/images/top.webp') },
@@ -44,9 +44,9 @@ const updateImg = (i) => {
     e.style.backgroundImage = 'url(' + imgs[i].imgUrl + ')';
 }
 
-const getSaying = async () => {
-    await proxy.$axios.get('https://saying.api.azwcl.com/saying/get').then((res) => {
-        saying.value = res.data.data
+const getSaying = () => {
+    proxy.$axios.get('https://v1.hitokoto.cn').then((res) => {
+        saying.value = res.data
     });
 }
 onMounted(() => {

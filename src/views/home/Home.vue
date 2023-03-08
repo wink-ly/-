@@ -24,15 +24,17 @@
             <div class="list">
                 <h2 style="color: #636363;">用户共享</h2>
                 <el-table :header-cell-style="{ background: '#f7f8fc' }" :data="tableData">
-                    <el-table-column label="书名" width="140" prop="book_name" align="center">
+                    <el-table-column label="书名" width="100" prop="book_name" align="center" show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column label="作者" width="130" prop="author" align="center">
+                    <el-table-column label="作者" width="120" prop="author" align="center" show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column label="出版社" width="130" prop="publish" align="center">
+                    <el-table-column label="出版社" width="120" prop="publish" align="center" show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column label="用户号码" width="130" prop="tel" align="center" v-if="user.identity == '管理员'">
+                    <el-table-column label="分类" width="90" prop="category" align="center">
                     </el-table-column>
-                    <el-table-column label="操作" width="210" prop="option" align="center">
+                    <el-table-column label="用户号码" width="120" prop="tel" align="center" v-if="user.identity == '管理员'">
+                    </el-table-column>
+                    <el-table-column label="操作" width="190" prop="option" align="center">
                         <template #default="scope">
                             <el-button type="success" @click="handleCopy(scope.row)" :disabled="user.identity != '管理员'">
                                 <el-icon>
@@ -48,7 +50,7 @@
             </div>
             <div class="column">
                 <div id="pie" class="pie"></div>
-                <div id="pie" class="pie"></div>
+                <div id="radar" class="radar"></div>
             </div>
         </div>
     </div>
@@ -68,6 +70,7 @@ let books = localStorage.getItem("data");
 let users = localStorage.getItem("users");
 var share = 0;
 var array = [];
+var array1 = [];
 var tableData = ref([]);
 const user = computed(() => {
     return store.getters.user;
@@ -82,7 +85,7 @@ const copyData = ref({
     tel: "",
 });
 const category = ["经典文学", "亲子共读", "科幻畅想", "心灵成长", "科学技术"]
-
+//  表格数据
 const getTable = () => {
     proxy.$axios
         .post("/book/share")
@@ -102,10 +105,10 @@ const handleCopy = (row) => {
         book_name: row.book_name,
         author: row.author,
         publish: row.publish,
-        count: 1
+        count: 1,
     }
     store.dispatch("setCopydata", copyData.value);
-    proxy.$message({ message: "复制成功！", type: "success" });
+    proxy.$message({ message: "复制成功！", duration: 1000, type: "success" });
 };
 //  删除按钮
 const handleDelete = (row) => {
@@ -117,12 +120,11 @@ const handleDelete = (row) => {
         book_name: row.book_name,
     }
 };
-
+//  饼状图
 const getPie = async () => {
     var chartDom = document.getElementById('pie');
     var chartPie = echarts.init(chartDom);
     var option;
-    
     for (let i = 0; i < 5; i++) {
         await proxy.$axios
             .post(`/book/category/${category[i]}`)
@@ -167,13 +169,68 @@ const getPie = async () => {
     option && chartPie.setOption(option);
 
 }
+//  雷达图
+const getRadar = async () => {
+    var chartDom = document.getElementById('radar');
+    var myChart = echarts.init(chartDom);
+    var option;
+    for (let i = 0; i < 5; i++) {
+        await proxy.$axios
+            .post(`/book/category/${category[i]}`)
+            .then((res) => {
+                array[i] = res.data.length
+            })
+    }
+    for (let i = 0; i < 5; i++) {
+        await proxy.$axios
+            .post(`/book/share/${category[i]}`)
+            .then((res) => {
+                array1[i] = res.data.length
+            })
+    }
+    option = {
+        legend: {
+            data: ['用户请求数量', '已有分类数量'],
+            orient: 'vertical',
+            left: 'left'
+        },
+        radar: {
+            indicator: [
+                { name: category[0], max: 10 },
+                { name: category[1], max: 10 },
+                { name: category[2], max: 10 },
+                { name: category[3], max: 10 },
+                { name: category[4], max: 10 }
+            ]
+        },
+        series: [
+            {
+                type: 'radar',
+                data: [
+                    {
+                        value: array1,
+                        name: '用户请求数量'
+                    },
+                    {
+                        value: array,
+                        name: '已有分类数量'
+                    }
+                ]
+            }
+        ]
+    };
+    chartDom.removeAttribute('_echarts_instance_');
+    option && myChart.setOption(option);
+}
 //监听浏览器窗口大小改变
 window.addEventListener('resize', () => {
     getPie();
+    getRadar();
 });
 
 onMounted(() => {
     getPie();
+    getRadar();
     getTable();
 })
 </script>
@@ -252,6 +309,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     flex-direction: column;
+    overflow: scroll;
 
     @media screen and (min-width: 220px) and (max-width:600px) {
         margin-left: 0;
@@ -289,7 +347,16 @@ onMounted(() => {
 }
 
 .pie {
-    height: 46%;
+    height: 40%;
+    width: 90%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    margin: 10px;
+}
+
+.radar {
+    height: 55%;
     width: 90%;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
