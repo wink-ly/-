@@ -47,7 +47,6 @@ const onSubmit = (form) => {
         }
     })
 }
-
 </script>
 
 <style>
