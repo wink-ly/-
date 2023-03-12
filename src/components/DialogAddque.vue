@@ -34,7 +34,7 @@ const form_rules = reactive({
 const onSubmit = (form) => {
     form.validate((valid) => {
         if (valid) {
-            const url = props.dialog.option == "add" ? "add" : `edit/${props.formData.question}`;
+            const url = props.dialog.option == "add" ? "add" : `edit/${props.formData.count}`;
             proxy.$axios.post(`/user/${url}`, props.formData).then(() => {
                 if (props.dialog.option == "edit") {
                     proxy.$message({ message: "数据更新成功", duration: 1000, type: "success" });

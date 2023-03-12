@@ -7,6 +7,8 @@
         </div>
         <div class="table">
             <el-table :data="tableData" stripe class="userdata">
+                <el-table-column prop="count" v-if="false">
+                </el-table-column>
                 <el-table-column label="问题" prop="question" width="200" align="center">
                 </el-table-column>
                 <el-table-column label="解答" prop="answer" width="210" align="center" show-overflow-tooltip>
@@ -62,6 +64,7 @@ let tableData = ref([])
 let feedbackData = ref([])
 const formData = ref({
     id: "",
+    count: "",
     question: "",
     answer: ""
 });
@@ -101,6 +104,7 @@ const handleEdit = (row) => {
         option: "edit",
     }
     formData.value = {
+        count: row.count,
         question: row.question,
         answer: row.answer,
     }
@@ -112,7 +116,7 @@ const DeleteQue = (row) => {
         option: "question_delete",
     };
     formData.value = {
-        question: row.question,
+        count: row.count,
     }
 }
 

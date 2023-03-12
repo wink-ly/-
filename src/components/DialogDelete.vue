@@ -45,8 +45,7 @@ const onSubmit = () => {
         });
     }
     if (props.dialog.option == "question_delete"){
-        proxy.$axios.post(`/user/deleque/${props.formData.question}`).then((res) => {
-            console.log(res)
+        proxy.$axios.post(`/user/deleque/${props.formData.count}`).then(() => {
             proxy.$message({ message: "删除成功！", duration: 1000 });
             props.dialog.show = false;
             emits("update1");
