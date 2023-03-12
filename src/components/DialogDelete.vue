@@ -15,7 +15,7 @@
 <script setup>
 import { getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
-const emits = defineEmits(['update']);
+const emits = defineEmits(['update' ,'update1']);
 const props = defineProps({
     dialog: Object,
     formData: Object,
@@ -27,6 +27,7 @@ const onSubmit = () => {
             proxy.$message({ message: "删除成功！", duration: 1000 });
             props.dialog.show = false;
             emits("update");
+            emits("update1");
         });
     }
     if (props.dialog.option == "book_delete") {
@@ -34,6 +35,21 @@ const onSubmit = () => {
             proxy.$message({ message: "删除成功！", duration: 1000 });
             props.dialog.show = false;
             emits("update");
+        });
+    }
+    if (props.dialog.option == "feedback_delete"){
+        proxy.$axios.post(`/user/delefeedback/${props.formData.id}`).then(() => {
+            proxy.$message({ message: "删除成功！", duration: 1000 });
+            props.dialog.show = false;
+            emits("update");
+        });
+    }
+    if (props.dialog.option == "question_delete"){
+        proxy.$axios.post(`/user/deleque/${props.formData.question}`).then((res) => {
+            console.log(res)
+            proxy.$message({ message: "删除成功！", duration: 1000 });
+            props.dialog.show = false;
+            emits("update1");
         });
     }
 };
@@ -47,8 +63,7 @@ const onSubmit = () => {
     margin-top: 35vh;
 
     @media screen and (min-width: 220px) and (max-width:600px) {
-        width: 90vw !important;
-        height: 80vh !important;
+        width: 60vw !important;
     }
 }
 

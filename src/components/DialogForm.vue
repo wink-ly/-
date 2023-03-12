@@ -82,9 +82,7 @@ const onSubmit = (form) => {
                 } else {
                     proxy.$message({ message: "数据添加成功", duration: 1000, type: "success" });
                 }
-                // 隐藏dialog
                 props.dialog.show = false;
-                // 数据添加后 自动刷新
                 emits("update");
             })
         }

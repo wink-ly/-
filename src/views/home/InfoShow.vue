@@ -9,7 +9,10 @@
         <div class="down">
             <div class="userinfo">
                 <span class="content">{{ saying.hitokoto }}</span>
-                <div class="author"><span>---{{ saying.from }}</span></div>
+                <div class="author">
+                    <span>---{{ saying.from }}<a href="https://hitokoto.cn/#" target="_blank">(友情链接)</a></span>
+                </div>
+
             </div>
             <div class="edit">
                 <div v-for="(item, index) in imgs" :key="index" class="list">
@@ -128,9 +131,18 @@ onMounted(() => {
     width: 60%;
     position: relative;
 
+    a {
+        float: right;
+        text-decoration: none;
+    }
+
     span {
         float: right;
     }
+}
+
+a:hover {
+    color: wheat;
 }
 
 .edit {

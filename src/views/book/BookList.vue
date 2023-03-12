@@ -169,7 +169,7 @@ const handleAdd = () => {
         book_name: copydata.value.book_name,
         author: copydata.value.author,
         publish: copydata.value.publish,
-        category: "",
+        category: copydata.value.category,
         count: copydata.value.count,
         img: "",
         introduction: "",

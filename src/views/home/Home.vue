@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <dialog-vue :dialog="dialog" :formData="formData" @update="getTable"></dialog-vue>
+    <dialog-vue :dialog="dialog" :formData="formData" @update="getTable" @update1="getRadar"></dialog-vue>
 </template>
 
 <script setup>
@@ -105,6 +105,7 @@ const handleCopy = (row) => {
         book_name: row.book_name,
         author: row.author,
         publish: row.publish,
+        category: row.category,
         count: 1,
     }
     store.dispatch("setCopydata", copyData.value);
@@ -190,7 +191,7 @@ const getRadar = async () => {
     }
     option = {
         legend: {
-            data: ['用户请求数量', '已有分类数量'],
+            data: ['用户请求概览', '已有分类概览'],
             orient: 'vertical',
             left: 'left'
         },
@@ -209,11 +210,11 @@ const getRadar = async () => {
                 data: [
                     {
                         value: array1,
-                        name: '用户请求数量'
+                        name: '用户请求概览'
                     },
                     {
                         value: array,
-                        name: '已有分类数量'
+                        name: '已有分类概览'
                     }
                 ]
             }
