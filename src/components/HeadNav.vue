@@ -2,7 +2,7 @@
     <header class="top">
         <div class="left">
             <img src="../assets/images/logo.png" alt="" />
-            <span>有点简朴的后台管理</span>
+            <span>共享阅读后台管理</span>
         </div>
         <div class="right">
             <img src="../assets/images/touxiang.png" alt="" />

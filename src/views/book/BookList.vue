@@ -1,6 +1,11 @@
 <template>
     <meta name="referrer" content="never">
     <div class="main">
+        <div class="beian">
+            <a href="https://beian.miit.gov.cn/">备案号:湘ICP备2022020668号</a> 
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010402001211"> 
+                <img src="../../assets/images/beian.png"/>湘公网安备 43010402001211号 </a>
+        </div>
         <div class="list">
             <el-button type="primary" class="addButton" @click="handleAdd" :disabled="user.identity != '管理员'"><el-icon>
                     <Plus />
@@ -278,6 +283,12 @@ onMounted(() => {
     @media screen and (min-width: 220px) and (max-width:600px) {
         display: none;
     }
+}
+
+.beian{
+    position: absolute;
+    margin-left: 18vh;
+    margin-top: 86vh;
 }
 </style>
 

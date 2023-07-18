@@ -53,6 +53,11 @@
                 <div id="radar" class="radar"></div>
             </div>
         </div>
+        <div class="beian">
+            <a href="https://beian.miit.gov.cn/">备案号:湘ICP备2022020668号</a> 
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010402001211"> 
+                <img src="../../assets/images/beian.png"/>湘公网安备 43010402001211号 </a>
+        </div>
     </div>
     <dialog-vue :dialog="dialog" :formData="formData" @update="getTable" @update1="getRadar"></dialog-vue>
 </template>
@@ -367,5 +372,9 @@ onMounted(() => {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+.beian{
+    float: right;
 }
 </style>

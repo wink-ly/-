@@ -1,7 +1,7 @@
 <template>
         <head-nav-vue></head-nav-vue>
         <left-menu-vue></left-menu-vue>
-        <router-view ></router-view>
+        <router-view></router-view>
 </template>
 
 <script setup>
@@ -10,5 +10,4 @@ import LeftMenuVue from "@/components/LeftMenu.vue";
 </script>
 
 <style scoped>
-
 </style>

@@ -34,7 +34,7 @@
                 </el-form-item>
 
                 <el-form-item prop="introduction" label="简介:">
-                    <el-input type="textarea" v-model="formData.introduction"></el-input>
+                    <el-input type="textarea" v-model="formData.introduction" rows="5"></el-input>
                 </el-form-item>
 
                 <el-form-item>
@@ -106,15 +106,5 @@ const cancel = () => {
         width: 90vw !important;
         height: 80vh !important;
     }
-}
-
-.dialog2 :deep(.el-dialog) {
-    @media screen and (min-width: 220px) and (max-width:600px) {
-        width: 90vw !important;
-    }
-}
-
-.dialog2 :deep(.el-textarea__inner) {
-    height: 80px;
 }
 </style>

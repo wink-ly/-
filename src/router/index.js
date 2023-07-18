@@ -46,6 +46,11 @@ const routes = [
     component: () => import("../views/register/Register.vue")
   },
   {
+    path: '/forget',
+    name: 'forget',
+    component: () => import("../views/forget/Forget.vue")
+  },
+  {
     path: '/:pathMatch(.*)',
     name: 'notfound',
     component: () => import("../views/NotFound.vue")
@@ -61,7 +66,7 @@ const router = createRouter({
 // 路由守卫  在没有登录之前，只能访问登录页面或者注册页面，其他页面都无妨访问
 router.beforeEach((to, from, next) => {
   const isLogin = localStorage.mytoken ? true : false
-  if (to.path == "/login" || to.path == '/register') {
+  if (to.path == "/login" || to.path == '/register' || to.path == '/forget') {
     next()
   } else {
     isLogin ? next() : next("/login")

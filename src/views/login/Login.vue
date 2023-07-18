@@ -7,14 +7,20 @@
                     <el-input type="text" class="inputDeep" v-model="loginUser.name" placeholder="请输入用户名"
                         autocomplete="off" />
                 </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" v-model="loginUser.password" placeholder="请输入密码" autocomplete="off" 
-                    @keyup.enter.native="submitForm(loginForm)"/>
+                <el-form-item prop="password" class="psd">
+                    <el-input type="password" v-model="loginUser.password" placeholder="请输入密码" autocomplete="off"
+                        show-password @keyup.enter.native="submitForm(loginForm)" />
                 </el-form-item>
-                <el-button @click="submitForm(loginForm)" >登录</el-button>
+                <p class="forget"><router-link to="/forget" replace>忘记密码？</router-link></p>
+                <el-button @click="submitForm(loginForm)">登录</el-button>
                 <p class="text">没有账户? <router-link to="/register" replace>注册一个吧</router-link> </p>
             </el-form>
         </section>
+        <div class="beian">
+            <a href="https://beian.miit.gov.cn/">备案号:湘ICP备2022020668号</a> 
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=43010402001211"> 
+                <img src="../../assets/images/beian.png"/>湘公网安备 43010402001211号 </a>
+        </div>
     </div>
 </template>
 
@@ -129,6 +135,10 @@ h1 {
     margin: 20px 0 40px;
 }
 
+.textarea .psd {
+    margin: 20px 0 10px;
+}
+
 .textarea :deep(.el-input__inner) {
     color: #fff;
     font-size: 18px;
@@ -138,7 +148,6 @@ h1 {
 .textarea :deep(.el-input__wrapper) {
     background-color: transparent;
     box-shadow: none;
-    display: block;
     border-radius: 0;
     border-bottom: 2px solid #fff;
 }
@@ -168,6 +177,11 @@ h1 {
     transform: scale(0.98);
 }
 
+.forget {
+    float: right;
+    margin-top: 0;
+}
+
 .text {
     margin-top: 15px;
 }
@@ -175,5 +189,11 @@ h1 {
 a {
     text-decoration: none;
     color: lightblue;
+}
+
+.beian{
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 </style>
